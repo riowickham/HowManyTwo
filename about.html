@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="eng">
+
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <title>HowMany.ie: The website for travel lovers.</title>
+</head>
+<body>
+    <script src="js/script.js"></script>
+
+    <div id="container">
+        <header class="myHeader">
+            <h1>HowMany.ie</h1>
+            <p id="tagline">About Us!</p>
+        </header>
+        <main>
+            <nav class="navbar">
+                <ul>
+                    <li><a class="item" href="index.html">Home</a></li>
+                    <li><a class="item" href="logger.html">Travel Logger</a></li>
+                    <li><a class="item" href="about.html">About Us</a></li>
+                    <li><a id="logIn" href="login.html">Log In</a></li>
+                    <li><a id="signUp" href="signup.html">Sign Up</a></li>
+                </ul>
+            </nav>
+            <h1 style="text-align: center;">About us</h1>
+            <div class="flex-container">
+                <p class="boxes">On this project I am going to be talking about my entire website as a whole, the person behind it, the code used for this project and the overall functionallity of the proejct.</p>
+                <p class="boxes"><span style="size: 15px; color: red;">Who Am I?:</span>My name is Rio and I am a first year student in SETU Waterford, I have created my project today based on Data Manipulation and how it is used properly broken down simply, my goal for this proejct is to create a simple yet efficient website which helps people track their travels.</p>
+                <p class="boxes">The aim of this entire project is to use JavaScript to show how much can be done from it, I have used all the knowledge I have developed in Semester 2 to create me a good website which could be alter deveolopesd in the future to help people.</p>
+                <p class="boxes">There will be a form below which will tkae in some feedback you have given me and let me develop futher on the skills. (This will be done by me, but with the help of chatGPT allow emails to be sent to it to help me get feedback).</p>
+                
+                <p><form style="background-color: white;text-align: center;" action="https://formspree.io/f/mldjljza" method="POST">
+                    <label for="feedback">Feedback: </label>
+                    <input type="text" id="feedback" name="feedback" required>
+                    <button type="submit">Submit Feedback</button>
+                </form></p>
+
+
+            </div>
+        
+    </div>
+</body>
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        const logInBtn = document.getElementById("logIn");
+        const signUpBtn = document.getElementById("signUp");
+
+        if (currentUser) {
+            // Hide Log In and Sign Up
+            if (logInBtn) logInBtn.style.display = "none";
+            if (signUpBtn) signUpBtn.style.display = "none";
+
+            // Optionally show a welcome message or Log Out button
+            const navbar = document.querySelector(".navbar ul");
+            const li = document.createElement("li");
+            li.innerHTML = `<span style="color: white;">${currentUser.username}</span> 
+                            <a href="#" id="logout" style="margin-left: 10px;">Log Out</a>`;
+            navbar.appendChild(li);
+
+            // Add logout functionality
+            document.getElementById("logout").addEventListener("click", () => {
+                localStorage.removeItem("currentUser");
+                window.location.reload();
+            });
+        }
+    });
+</script>
+
+
+</html>

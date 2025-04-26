@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="eng">
+
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <title>HowMany.ie: The website for travel lovers.</title>
+</head>
+
+<body>
+
+    <div id="container">
+        <header class="myHeader">
+            <h1>HowMany.ie</h1>
+            <p id="tagline">Travel Logger</p>
+        </header>
+
+        <main>
+            <nav class="navbar">
+                <ul>
+                    <li><a class="item" href="index.html">Home</a></li>
+                    <li><a class="item" href="logger.html">Travel Logger</a></li>
+                    <li><a class="item" href="about.html">About Us</a></li>
+                    <li><a id="logIn" href="login.html">Log In</a></li>
+                    <li><a id="signUp" href="signup.html">Sign Up</a></li>
+                </ul>
+            </nav>
+
+            <div class="FullForm">
+                <form id="loginForm">
+                    <div class="form-row">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" id="username" autofocus required title="Please enter your username">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" required title="Please enter your password">
+                    </div>
+                    <button type="submit">
+                        Log In
+                    </button>
+                    <button type="reset">
+                        Clear the Info
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        if (localStorage.getItem("currentUser")) {
+            window.location.href = "index.html";
+        }
+
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            var storedUser = localStorage.getItem(username);
+
+            if (storedUser) {
+                var parsedUser = JSON.parse(storedUser);
+                if (parsedUser.password === password) {
+                    localStorage.setItem("currentUser", JSON.stringify(parsedUser));
+                    alert("Login successful!");
+                    window.location.href = "index.html";
+                } else {
+                    alert("Incorrect password.");
+                }
+            } else {
+                alert("User not found.");
+            }
+        });
+    </script>
+
+</body>
+
+</html>

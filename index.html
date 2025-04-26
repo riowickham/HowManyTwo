@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="eng">
+
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <title>HowMany.ie: The website for travel lovers.</title>
+</head>
+<body>
+    
+
+    <div id="container">
+        <header class="myHeader">
+            <h1>HowMany.ie</h1>
+            <p id="tagline">Home</p>
+        </header>
+        <main>
+            <nav class="navbar">
+                <ul>
+                    <li><a class="item" href="index.html">Home</a></li>
+                    <li><a class="item" href="logger.html">Travel Logger</a></li>
+                    <li><a class="item" href="about.html">About Us</a></li>
+                    <li><a id="logIn" href="login.html">Log In</a></li>
+                    <li><a id="signUp" href="signup.html">Sign Up</a></li>
+                </ul>
+            </nav>
+        </main>
+    <div class="boxes">
+        <p>Welcome to our page!</p>
+        <p>Our page was created to give everyone a nice and easy way to log your travels and keep track of your journey around the world!!</p>
+        <p>On our page you will find called "Travel Logger" you will be able to enter, delete and search the countries you have travelled to, our page will also greet you with a counter after the first country has been entered leting you know how many places you have visited. When you enter the country you have visited you are now allowed to search (non case sensitive) for the country you have entered and it will display on the top of the page the details of your travels.</p>
+        <p>When you then visit our "about us" page you will be greeted with a page talking about this project, my work and progress making it, how I took the necessary steps in order to complete the code and </p>
+    </div>
+
+    <div class="flightStyle">
+        <img class="img-plane"src="images/AerLingus.png" width="200" height="200" alt="AerLingus">
+        <a class="buttonStyle" href="https://www.aerlingus.com/html/en-IE/home.html" target="_blank">Visit here!</a>
+    </div>
+
+    <div class="flightStyle">
+        <img class="img-plane"src="images/RyanAir.png" width="200" height="200" alt="AerLingus">
+        <a class="buttonStyle" href="https://www.ryanair.com/ie/en" target="_blank">Visit here!</a>
+    </div>
+
+    </div>
+    <script src="js/script.js"></script>
+</body>
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        const logInBtn = document.getElementById("logIn");
+        const signUpBtn = document.getElementById("signUp");
+
+        if (currentUser) {
+            if (logInBtn) logInBtn.style.display = "none";
+            if (signUpBtn) signUpBtn.style.display = "none";
+
+            const navbar = document.querySelector(".navbar ul");
+            const li = document.createElement("li");
+            li.innerHTML = `<span style="color: white;">${currentUser.username}</span> 
+                            <a href="#" id="logout" style="margin-left: 10px;">Log Out</a>`;
+            navbar.appendChild(li);
+
+            document.getElementById("logout").addEventListener("click", () => {
+                localStorage.removeItem("currentUser");
+                window.location.reload();
+            });
+        }
+    });
+</script>
+
+
+</html>

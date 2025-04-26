@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HowMany.ie: The website for travel lovers.</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="container">
+    <header class="myHeader">
+        <h1>HowMany.ie</h1>
+        <p id="tagline">Travel Logger</p>
+    </header>
+
+    <main>
+        <nav class="navbar">
+            <ul>
+                <li><a class="item" href="index.html">Home</a></li>
+                <li><a class="item" href="logger.html">Travel Logger</a></li>
+                <li><a class="item" href="about.html">About Us</a></li>
+                <li><a id="logIn" href="login.html">Log In</a></li>
+                <li><a id="signUp" href="signup.html">Sign Up</a></li>
+            </ul>
+        </nav>
+
+        <div class="FullForm">
+            <form id="travelForm">
+                <div class="myFormRow">
+                    <label for="country">Country Visited</label>
+                    <input type="text" name="country" id="country" required>
+                </div>
+
+                <div class="myFormRow">
+                    <label for="dateVisited">Date Visited</label>
+                    <input type="date" name="dateVisited" id="dateVisited" required>
+                </div>
+
+                <div class="myFormRow">
+                    <label for="rating">Country Rating (1–10)</label>
+                    <input type="number" name="rating" id="rating" required min="1" max="10">
+                </div>
+
+                <button class="submit-su" type="submit">Submit</button>
+                <button class="reset" type="reset">Reset</button>
+            </form>
+        <input type="text" id="search" placeholder="Search country...">
+        <button onclick="search()">Search</button>
+        <p id="error">Country can't be found.</p>
+        </div>
+
+        <div id="cardContainer"></div>
+
+        
+    </main>
+</div>
+
+<script id="travelCardTemplate" type="text/x-handlebars-template">
+    <div class="card" data-country="{{countryName}}">
+        <img src="flags/{{countryNameChanged}}.png" alt="{{countryName}} flag" class="flag">
+        <h2>{{countryName}}</h2>
+        <p>Date Visited: {{dateVisited}}</p>
+        <p>Rating: {{rating}}</p>
+        <button class="deleteButton" onclick="deleteCard('{{countryName}}')">Delete</button>
+    </div>
+</script>
+
+<script>
+    document.getElementById("travelForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const country = document.getElementById("country").value.trim();
+        const dateVisited = document.getElementById("dateVisited").value;
+        const rating = document.getElementById("rating").value;
+
+        const travelData = { 
+            countryName: country, 
+            countryNameChanged: country.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, ''),
+            dateVisited, 
+            rating 
+        };
+
+        let travelLog = JSON.parse(localStorage.getItem("travelLog")) || [];
+        travelLog.push(travelData);
+        localStorage.setItem("travelLog", JSON.stringify(travelLog));
+
+        createCard(travelData);
+        event.target.reset();
+    });
+
+    function createCard(travelData) {
+        const templateSource = document.getElementById("travelCardTemplate").innerHTML;
+        const template = Handlebars.compile(templateSource);
+        const cardHTML = template(travelData);
+
+        const cardContainer = document.getElementById("cardContainer");
+        cardContainer.innerHTML += cardHTML;
+    }
+
+    function search() {
+        const searchQuery = document.getElementById("search").value.trim().toLowerCase();
+        const travelLog = JSON.parse(localStorage.getItem("travelLog")) || [];
+        const filteredTravelLog = travelLog.filter(travel => 
+            travel.countryName.toLowerCase().includes(searchQuery)
+        );
+
+        const cardContainer = document.getElementById("cardContainer");
+        cardContainer.innerHTML = "";
+        filteredTravelLog.forEach(createCard);
+    }
+
+    function deleteCard(countryName) {
+        const card = document.querySelector(`.card[data-country="${countryName}"]`);
+        card.remove();
+        let travelLog = JSON.parse(localStorage.getItem("travelLog")) || [];
+        travelLog = travelLog.filter(travel => travel.countryName !== countryName);
+        localStorage.setItem("travelLog", JSON.stringify(travelLog));
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const travelLog = JSON.parse(localStorage.getItem("travelLog")) || [];
+        travelLog.forEach(createCard);
+    });
+</script>
+
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        const logInBtn = document.getElementById("logIn");
+        const signUpBtn = document.getElementById("signUp");
+
+        if (currentUser) {
+            if (logInBtn) logInBtn.style.display = "none";
+            if (signUpBtn) signUpBtn.style.display = "none";
+
+            const navbar = document.querySelector(".navbar ul");
+            const li = document.createElement("li");
+            li.innerHTML = `<span style="color: white;">${currentUser.username}</span> 
+                            <a href="#" id="logout" style="margin-left: 10px;">Log Out</a>`;
+            navbar.appendChild(li);
+
+            document.getElementById("logout").addEventListener("click", () => {
+                localStorage.removeItem("currentUser");
+                window.location.reload();
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

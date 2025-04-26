@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="eng">
+
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <title>HowMany.ie: The website for travel lovers.</title>
+</head>
+
+<body>
+
+    <div id="container">
+        <header class="myHeader">
+            <h1>HowMany.ie</h1>
+            <p id="tagline">Travel Logger</p>
+        </header>
+
+        <main>
+            <nav class="navbar">
+                <ul>
+                    <li><a class="item" href="index.html">Home</a></li>
+                    <li><a class="item" href="logger.html">Travel Logger</a></li>
+                    <li><a class="item" href="about.html">About Us</a></li>
+                    <li><a id="logIn" href="login.html">Log In</a></li>
+                    <li><a id="signUp" href="signup.html">Sign Up</a></li>
+                </ul>
+            </nav>
+
+            <div>
+                <div class="FullForm">
+                    <form id="signupForm">
+                        <div class="form-row">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" id="username" required title="Please enter your username">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" required title="Please enter your email">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="birthday">Date of Birth</label>
+                            <input type="date" name="dob" id="dob" required title="Please select your date of birth">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" id="password" required title="Please enter your password">
+                        </div>
+
+                        <button type="submit">
+                            Sign Up
+                        </button>
+                        <button type="reset">
+                            Clear the Info
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        if (localStorage.getItem("currentUser")) {
+            window.location.href = "index.html";
+        }
+
+        document.getElementById("signupForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            var username = document.getElementById("username").value;
+            var email = document.getElementById("email").value;
+            var dob = document.getElementById("dob").value;
+            var password = document.getElementById("password").value;
+
+            var newUser = { username, email, dob, password };
+
+            if (localStorage.getItem(username)) {
+                alert("Username already taken!");
+                return;
+            }
+
+            localStorage.setItem(username, JSON.stringify(newUser));
+            alert("Account created! You can now log in.");
+            event.target.reset();
+        });
+    </script>
+
+</body>
+
+</html>
